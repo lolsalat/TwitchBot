@@ -1,5 +1,5 @@
 # TwitchBot
-Wir bauen einen Twitch Chatbot!
+Wir bauen einen Twitch Chatbot! ([VOD](https://www.twitch.tv/videos/1569480000))
 
 ## Übersicht
 Twitch benutzt IRC für chat bots (https://dev.twitch.tv/docs/irc).
