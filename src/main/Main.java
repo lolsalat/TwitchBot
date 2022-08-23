@@ -18,7 +18,7 @@ public class Main {
 
         // login
         if(bot.start(token)) {
-            bot.color(new Color(0xFF, 0, 0xFF));
+            bot.chatCommands.color(new Color(0xFF, 0, 0xFF));
             Thread.sleep(1000);
         } else {
             System.err.println("Login failed");

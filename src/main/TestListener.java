@@ -12,11 +12,11 @@ public class TestListener  implements TwitchBotListener {
         switch(command){
 
             case "github" : 
-                bot.sendTextMessage("https://github.com/lolsalat/TwitchBot");
+                bot.chatMessages.sendTextMessage("https://github.com/lolsalat/TwitchBot");
                 break;
 
             case "answerme":
-                bot.sendTextMessage(Map.of("reply-parent-msg-id", msg.tags.get("id"), "target-user-id", msg.tags.get("user-id")), "I answered you!");
+                bot.chatMessages.sendTextMessage(Map.of("reply-parent-msg-id", msg.tags.get("id"), "target-user-id", msg.tags.get("user-id")), "I answered you!");
                 break;
             
         }
@@ -119,7 +119,7 @@ public class TestListener  implements TwitchBotListener {
     @Override
     public void onJoined(TwitchChatBot bot, TwitchMessage msg, String user, String channel) {
         System.out.printf("User %s joined the chat!\n", user);
-        bot.sendTextMessage(String.format("Willkommen im Stream %s!", user));
+        bot.chatMessages.sendTextMessage(String.format("Willkommen im Stream %s!", user));
     }
     
 }
