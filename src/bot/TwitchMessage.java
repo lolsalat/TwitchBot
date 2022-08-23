@@ -3,6 +3,7 @@ package bot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.Map.Entry;
 
 public class TwitchMessage {
     
@@ -84,7 +85,17 @@ public class TwitchMessage {
             joiner.add(s);
         }
 
-        return joiner.toString();
+        String tags = "";
+
+        if(this.tags != null && !this.tags.isEmpty()){
+            tags = "@";
+            StringJoiner tagJoiner = new StringJoiner(";");
+            for(Entry<String,String> tag : this.tags.entrySet()){
+                tagJoiner.add(tag.getKey() + "=" + tag.getValue());
+            }
+        }
+
+        return tags + joiner.toString();
     }
 
 }
