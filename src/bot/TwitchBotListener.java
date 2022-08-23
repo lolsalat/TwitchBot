@@ -20,7 +20,7 @@ public interface TwitchBotListener {
      */
     public void onPart(TwitchChatBot bot, TwitchMessage msg, String channel);
 
-    /**
+    /** 
      * Called whenever an Unknown Command message is received
      * @param bot Instance of the {@link bot.TwitchChatBot}
      * @param msg Received {@link bot.TwitchMessage} that triggered this event

@@ -1,49 +1,53 @@
 package main;
 
-import java.util.Map;
 
-import bot.TwitchBotListener;
 import bot.TwitchChatBot;
+import bot.TwitchCommandListener;
 import bot.TwitchMessage;
 
 /**
  * Example Bot that does some basic things
  */
-public class TestListener  implements TwitchBotListener {
+public class TestListener  extends TwitchCommandListener {
 
-    public void runCommand(TwitchChatBot bot, TwitchMessage msg, String command, String arg){
-        switch(command){
+    public TestListener(){
+        super();
+        this.parseCommands(this);
+   }
 
-            case "github" : 
-                bot.chatMessages.sendTextMessage("https://github.com/lolsalat/TwitchBot");
-                break;
-
-            case "answerme":
-                bot.chatMessages.sendTextMessage(Map.of("reply-parent-msg-id", msg.tags.get("id"), "target-user-id", msg.tags.get("user-id")), "I answered you!");
-                break;
-            
-        }
+    @Command(name="github", help="gibt den Github link aus")
+    public void githubCommand(TwitchChatBot bot, String command, String... arguments){
+        bot.chatMessages.sendTextMessage("https://github.com/lolsalat/");
     }
 
-    @Override
-    public void onMessageSent(TwitchChatBot bot, TwitchMessage msg, String channel, String sender, String message) {
-        System.out.printf("[onMessageSent][%s][%s]: %s\n", channel, sender, message);
-    
-        if(message.startsWith("!")){
-
-            String command = message.substring(1);
-            String arg = "";
-            
-            if(command.contains(" ")) {
-                arg = command.substring(command.indexOf(" ") + 1);
-                command = command.substring(0, command.indexOf(" "));
+    @Command(name = "help", usage="!help [command]", help="gibt diese hilfe aus")
+    public void helpCommand(TwitchChatBot bot, String command, String... arguments){
+        if(arguments.length == 0){
+            bot.chatMessages.sendTextMessage("Kommandos:");
+            for(CommandInfo cmd : this.commandsRegistry.values()){
+                bot.chatMessages.sendTextMessage("-> " + cmd.usage + ": " + cmd.help);
             }
-
-            this.runCommand(bot, msg, command, arg);
+        } else {
+            for(String cmd : arguments){
+                CommandInfo info = this.commandsRegistry.get(cmd);
+                if(info != null){
+                    bot.chatMessages.sendTextMessage("-> " + info.usage + ": " + info.help);
+                } else {
+                    bot.chatMessages.sendTextMessage("der Befehl '" + cmd + "' existiert nicht!");
+                }
+            }
         }
-
     }
 
+    @Command(name="echo", usage="!echo <text>", help="der Bot antwortet mit deiner Nachricht")
+    public void echoCommand(TwitchChatBot bot, String command, String... arguments){
+        if(arguments.length == 0){
+            bot.chatMessages.sendTextMessage("ich kann keine Leere Nachricht zurückgeben!");
+        } else {
+           bot.chatMessages.sendTextMessage("->" + arguments[0]);
+        }
+    }
+    
     @Override
     public void onPart(TwitchChatBot bot, TwitchMessage msg, String channel) {
         System.out.printf("[onPart]: %s\n", channel);
@@ -56,73 +60,9 @@ public class TestListener  implements TwitchBotListener {
     }
 
     @Override
-    public void onClearChat(TwitchChatBot bot, TwitchMessage msg, String channel, String user) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onClearMessage(TwitchChatBot bot, TwitchMessage msg, String channel, String message) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onGlobalUserState(TwitchChatBot bot, TwitchMessage msg) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onHostTarget(TwitchChatBot bot, TwitchMessage msg, String hostingChannel, String channel, int viewers) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onNotice(TwitchChatBot bot, TwitchMessage msg, String notice) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onReconnect(TwitchChatBot bot, TwitchMessage msg) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onRoomState(TwitchChatBot bot, TwitchMessage msg, String channel) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onUserNotice(TwitchChatBot bot, TwitchMessage msg, String channel, String message) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onUserState(TwitchChatBot bot, TwitchMessage msg, String channel) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onWhisper(TwitchChatBot bot, TwitchMessage msg, String user, String message) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onCap(TwitchChatBot bot, TwitchMessage msg) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void onJoined(TwitchChatBot bot, TwitchMessage msg, String user, String channel) {
         System.out.printf("User %s joined the chat!\n", user);
-        bot.chatMessages.sendTextMessage(String.format("Willkommen im Stream %s!", user));
+        // bot.chatMessages.sendTextMessage(String.format("Willkommen im Stream %s!", user));
     }
     
 }

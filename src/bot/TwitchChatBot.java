@@ -86,7 +86,7 @@ public class TwitchChatBot extends Thread {
     public TwitchChatBot(String username, String host, int port, Function<TwitchChatBot, TwitchMessageHandler> messageHandlerConstructor) throws IOException {
         this.username = username;
         this.messageHandler = messageHandlerConstructor.apply(this);
-        this.chatCommands = new TwitchChatCommands(this);
+        this.chatCommands = new TwitchChatCommands(this); 
         this.chatMessages = new TwitchChatMessages(this);
 
         // 0. SSL setup

@@ -28,7 +28,7 @@ public class Main {
             // change bot color to pink
             bot.chatCommands.color(new Color(0xFF, 0, 0xFF));
             // send a message in the chat
-            bot.chatMessages.sendTextMessage("Hi there, I have been started!");
+            // bot.chatMessages.sendTextMessage("Hallo, ich bin der Chat bot :)");
         } else {
             /* login failed */
             System.err.println("Login failed");

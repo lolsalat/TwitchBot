@@ -2,7 +2,7 @@ package bot;
 
 import java.util.StringJoiner;
 import java.awt.Color;
-
+ 
 /**
  * The sole use of this class is to send chat commands.
  */
