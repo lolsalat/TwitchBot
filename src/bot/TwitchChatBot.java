@@ -9,6 +9,10 @@ import java.util.function.Function;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+/**
+ * Most important class to do chat bot things. <br>
+ * Most things are accessed through an instance of this class.
+ */
 public class TwitchChatBot extends Thread {
 
     /*
@@ -48,7 +52,7 @@ public class TwitchChatBot extends Thread {
     /**
      * Parses and handles messages from the server
      */
-    public final TwitchMessageHandler messageHandler;
+    private final TwitchMessageHandler messageHandler;
 
     /**
      * Sends chat commands
@@ -64,7 +68,7 @@ public class TwitchChatBot extends Thread {
      * Debug flag. <br>
      * Enable to dump all input and output to System.out.
      */
-    public boolean debug = false;
+    public boolean debug;
 
 
     /*
@@ -144,7 +148,7 @@ public class TwitchChatBot extends Thread {
      * Reads a line from {@link #in}
      * @return The line read
      */
-    public String readLine() {
+    protected String readLine() {
         try {
             String line = in.readLine();
             if(debug){
@@ -161,7 +165,7 @@ public class TwitchChatBot extends Thread {
      * Reads a line from {@link #in} and parses it into a {@link bot.TwitchMessage}
      * @return The parsed message
      */
-    public TwitchMessage readMessage(){
+    protected TwitchMessage readMessage(){
         return TwitchMessage.parse(readLine());
     }
 
@@ -171,7 +175,7 @@ public class TwitchChatBot extends Thread {
      * @param line Format string to send
      * @param formatters Values to apply to format string
      */
-    public void sendLinef(String line, Object... formatters) {
+    protected void sendLinef(String line, Object... formatters) {
         this.sendLine(String.format(line, formatters));
     }
 
@@ -180,11 +184,16 @@ public class TwitchChatBot extends Thread {
      * Sends a line to {@link #out}
      * @param line Line to send
      */
-    public void sendLine(String line)  {
+    protected void sendLine(String line)  {
         if(this.debug)
             System.out.printf(">>> %s\n", line);
         out.println(line);
     }
+
+
+    /*
+     * exposed methods
+     */
 
     /**
      * You likely do not need this! <br>
@@ -193,11 +202,6 @@ public class TwitchChatBot extends Thread {
     public void sendMessage(TwitchMessage message){
         this.sendLine(message.toString());
     }
-
-
-    /*
-     * Starting the bot
-     */
 
     /**
      * Starts the bot. <br>
@@ -232,5 +236,21 @@ public class TwitchChatBot extends Thread {
         this.start();
 
         return true;
+    }
+
+    /**
+     * Adds a listener to the {@link #messageHandler}
+     * @param listener Listener to add
+     */
+    public void addListener(TwitchBotListener listener){
+        this.messageHandler.add(listener);
+    }
+
+    /**
+     * Removes a listener from the {@link #messageHandler}
+     * @param listener Listener to remove
+     */
+    public void removeListener(TwitchBotListener listener){
+        this.messageHandler.remove(listener);
     }
 }

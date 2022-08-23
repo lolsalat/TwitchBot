@@ -48,4 +48,6 @@ public class TwitchChatMessages {
         bot.sendLinef("%sPRIVMSG #%s :%s", prefix, bot.username.toLowerCase(), message);
     }
 
+    // TODO: add methods that make responding etc. easy
+
 }

@@ -6,6 +6,9 @@ import bot.TwitchBotListener;
 import bot.TwitchChatBot;
 import bot.TwitchMessage;
 
+/**
+ * Example Bot that does some basic things
+ */
 public class TestListener  implements TwitchBotListener {
 
     public void runCommand(TwitchChatBot bot, TwitchMessage msg, String command, String arg){

@@ -5,21 +5,55 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.Map.Entry;
 
+/**
+ * A message that can be sent to the Twitch chat IRC or was received from it. <br>
+ * You usually don't have to worry about sending them.
+ */
 public class TwitchMessage {
     
-    public static final String TAG_ID = "id", TAG_USER_ID = "user-id";
+    /**
+     * Tag for message id
+     */
+    public static final String TAG_ID = "id";
+    
+    /**
+     * Tag for user id
+     */
+    public static final String TAG_USER_ID = "user-id";
 
-    public Map<String,String> tags;
+    // TODO: add more tag constants
+
+    /**
+     * Tags attached to this message. Empty if tags are not enabled
+     */
+    public Map<String,String> tags = new HashMap<>();
+
+
+    /**
+     * "Sender" of the message (not parsed, in a weird format)
+     */
     public String sender;
+
+    /**
+     * Message type (e.g. JOIN or PRIVMSG)
+     */
     public String message;
+
+    /**
+     * Message parameters
+     */
     public String[] arguments;
 
+    /**
+     * Parses a TwitchMessage from a String
+     * @param line String to parse
+     * @return The parsed message
+     */
     public static TwitchMessage parse(String line){
         if(line == null)
             return null;
 
         TwitchMessage message = new TwitchMessage();
-        message.tags = new HashMap<>();
 
         if(line.startsWith("@")){
 
@@ -73,6 +107,9 @@ public class TwitchMessage {
         return message;
     }
 
+    /**
+     * un-parses the message into a format that can be sent as IRC message.
+     */
     @Override
     public String toString(){
         StringJoiner joiner = new StringJoiner(" ");

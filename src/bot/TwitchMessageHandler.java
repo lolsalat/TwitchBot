@@ -3,25 +3,52 @@ package bot;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class is responsible for handling IRC messages received on the Twitch chat IRC. <br>
+ * You likely don't have to ever use any of this directly.
+ */
 public class TwitchMessageHandler {
 
+    /**
+     * Listeners for parsed events
+     */
     private final Set<TwitchBotListener> listeners;
+
+    /**
+     * Bot instance
+     */
     private final TwitchChatBot bot;
 
+    /**
+     * Constructor
+     * @param bot {@link #bot}
+     */
     public TwitchMessageHandler(TwitchChatBot bot){
         this.listeners = new HashSet<>();
         this.bot = bot;
     }
 
-    public void add(TwitchBotListener listener){
+    /**
+     * Add a listener to {@link #listeners}
+     * @param listener Listener to add
+     */
+    protected void add(TwitchBotListener listener){
         this.listeners.add(listener);
     }
 
-    public void remove(TwitchBotListener listener){
+    /**
+     * Remove a listener from {@link #listeners}
+     * @param listener Listener to remove
+     */
+    protected void remove(TwitchBotListener listener){
         this.listeners.remove(listener);
     }
 
-    public void handleMesssage(TwitchMessage message){
+    /**
+     * Handle a TwitchMessage and call listeners if necessary
+     * @param message Message to handle
+     */
+    protected void handleMesssage(TwitchMessage message){
         if(message.sender.equals("PING")){
             bot.sendLinef("PONG :%s", message.message);
             return;
